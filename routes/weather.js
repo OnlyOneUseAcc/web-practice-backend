@@ -12,7 +12,7 @@ router.get("/coordinates", asyncHandler(async (req, res) => {
         res.status(404).send();
         return;
     }
-    res.set('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.send(response);
 }));
 
@@ -24,7 +24,7 @@ router.get("/city", asyncHandler(async (req, res) => {
         res.status(404).send();
         return;
     }
-    res.set('Access-Control-Allow-Origin', '*')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     res.send(response);
 }));
 

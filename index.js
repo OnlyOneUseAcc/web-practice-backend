@@ -10,8 +10,10 @@ app.use(cors());
 app.options('*', cors());
 
 mongoose.set('useCreateIndex', true);
-const user = process.env.MONGO_USER;
-const password = process.env.MONGO_PASSWORD;
+//const user = process.env.MONGO_USER;
+//const password = process.env.MONGO_PASSWORD;
+const user = "kozlov";
+const password = "1234567890";
 
 const mongooseURL =
     `mongodb+srv://${user}:${password}@mycluster.4fb6x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
