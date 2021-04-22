@@ -24,6 +24,13 @@ async function start() {
     let dataBase = await mongoose.connect(mongooseURL, {useUnifiedTopology: true, useNewUrlParser: true,
         useFindAndModify: false});
 
+    app.use((req, res, next) => {
+        res.append('Access-Control-Allow-Origin', ['*']);
+        res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        res.append('Access-Control-Allow-Headers', 'Content-Type');
+        next();
+    });
+
     app.use("/weather", weather);
 
     cities.init(dataBase);
