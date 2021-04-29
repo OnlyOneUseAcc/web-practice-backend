@@ -16,8 +16,7 @@ router.get("/", asyncHandler (async (req, res) => {
     let arr = [];
 
     cities.forEach(data => arr.push(data.name));
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.send({cities: arr})
+    res.send({cities: arr});
 }));
 
 router.post("/",asyncHandler (async (req, res) => {
@@ -26,21 +25,18 @@ router.post("/",asyncHandler (async (req, res) => {
     let data = await fetch.fetchCityByName(name);
 
     if (data == null) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(404).send();
-        return;
+        return null;
     }
 
     let isConsist = await favoriteCity.findOne({name: data.name}).exec();
 
     if (isConsist !== null) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(409).send();
         return;
     }
 
     new favoriteCity({name: data.name}).save();
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(201).send(data);
 }));
 
@@ -49,11 +45,9 @@ router.delete("/",asyncHandler (async (req, res) => {
 
     const removeCity = await favoriteCity.findOneAndRemove({name: name});
     if (removeCity === null) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(404).send();
-        return;
+        return null;
     }
-    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(204).send();
 }));
 

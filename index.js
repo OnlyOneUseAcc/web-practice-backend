@@ -10,10 +10,8 @@ app.use(cors());
 app.options('*', cors());
 
 mongoose.set('useCreateIndex', true);
-//const user = process.env.MONGO_USER;
-//const password = process.env.MONGO_PASSWORD;
-const user = "kozlov";
-const password = "1234567890";
+const user = process.env.MONGO_USER;
+const password = process.env.MONGO_PASSWORD;
 
 const mongooseURL =
     `mongodb+srv://${user}:${password}@mycluster.4fb6x.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
@@ -21,24 +19,22 @@ const mongooseURL =
 const PORT = process.env.PORT || 3000;
 
 async function start() {
-    let dataBase = await mongoose.connect(mongooseURL, {useUnifiedTopology: true, useNewUrlParser: true,
+    try {
+        let dataBase = await mongoose.connect(mongooseURL, {useUnifiedTopology: true, useNewUrlParser: true,
         useFindAndModify: false});
 
-    app.use((req, res, next) => {
-        res.append('Access-Control-Allow-Origin', ['*']);
-        res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-        res.append('Access-Control-Allow-Headers', 'Content-Type');
-        next();
-    });
+        app.use("/weather", weather);
 
-    app.use("/weather", weather);
+        cities.init(dataBase);
+        app.use('/favorites', cities.router);
 
-    cities.init(dataBase);
-    app.use('/favorites', cities.router);
+        app.listen(PORT,() => {
+            console.log('Сервер работает...');
+        });
+    } catch (error){
+        console.log(error.message)
+    }
 
-    app.listen(PORT, () => {
-        console.log('Сервер работает...');
-    });
 }
 
 start();

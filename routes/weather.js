@@ -4,15 +4,13 @@ let express = require('express');
 let router = express.Router();
 
 router.get("/coordinates", asyncHandler(async (req, res) => {
-    const lat = req.query.lat;
-    const lon = req.query.lon;
+    const {lat, lon} = req.query;
 
     const response = await fetch.fetchCityByCoords(lat, lon);
     if (response == null) {
         res.status(404).send();
-        return;
+        return null;
     }
-    res.setHeader('Access-Control-Allow-Origin', '*')
     res.send(response);
 }));
 
@@ -22,9 +20,8 @@ router.get("/city", asyncHandler(async (req, res) => {
     const response = await fetch.fetchCityByName(name);
     if (response == null) {
         res.status(404).send();
-        return;
+        return null;
     }
-    res.setHeader('Access-Control-Allow-Origin', '*')
     res.send(response);
 }));
 
